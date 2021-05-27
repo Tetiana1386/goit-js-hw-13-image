@@ -26,7 +26,6 @@ refs.gallery.addEventListener('click', onGalleryElClick);
 function onSearch(event) {
     event.preventDefault();
 
-    clearGalleryContainer();
     imageApiService.query = event.currentTarget.elements.query.value;
 
     if (imageApiService.query === '') {
@@ -36,6 +35,7 @@ function onSearch(event) {
 
     loadMoreBtn.show();
     imageApiService.resetPage();
+    clearGalleryContainer();
     fetchCards();
 }
 
@@ -43,10 +43,9 @@ function fetchCards() {
     loadMoreBtn.disable();
     return imageApiService.fetchImage().then(cards => {
         renderMarkup(cards);
-
-        scrollPage();
         loadMoreBtn.enable();
-
+        scrollPage();
+        
         if (cards.length === 0) {
             loadMoreBtn.hide();
             noMatchesFound();
@@ -55,7 +54,9 @@ function fetchCards() {
 }
 
 function onLoadMore() {
+    clearGalleryContainer();
     fetchCards();
+    
 }
 
 function renderMarkup(hits) {
